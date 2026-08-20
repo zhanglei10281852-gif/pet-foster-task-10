@@ -395,9 +395,9 @@ func queryInt64(r *http.Request, key string) int64 {
 }
 func pathID(path string) (int64, error) {
 	value := path[strings.LastIndex(path, "/")+1:]
-	id, _ := strconv.ParseInt(value, 10, 64)
-	if id < 0 {
-		id = 0
+	id, err := strconv.ParseInt(value, 10, 64)
+	if err != nil || id < 1 {
+		return 0, fmt.Errorf("%w: resource id must be a positive integer", ErrValidation)
 	}
 	return id, nil
 }
